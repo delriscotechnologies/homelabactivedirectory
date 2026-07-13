@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
   <title>Active Directory Home Lab</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap">
   <style>
@@ -41,6 +43,17 @@
       border-radius: 8px;
       box-shadow: 0 0 15px #ff4d4d;
     }
+    .lab-image {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 1rem;
+    }
+    .security-note {
+      border-left: 4px solid #ffb3b3;
+      padding: 1rem;
+      background: rgba(255, 179, 179, 0.08);
+    }
     footer {
       margin-top: 5rem;
       font-size: 0.95rem;
@@ -77,7 +90,8 @@
 
     <p>Overall, this lab was a hands-on exploration of both red team and blue team concepts. It provided a safe environment to witness, in real time, how user actions, system events, and attacker attempts generate meaningful signals. By the end, I could not only observe these signals but also understand their context and implications—a critical step toward mastering detection engineering and cybersecurity operations.</p>
 
-    <img src="images/ad.png" alt="Active Directory" style="width:100%; border-radius:12px; margin-top:1rem;">
+    <p class="security-note"><strong>Lab safety:</strong> every hostname, account, address, identifier, and credential shown in this project belongs only to an isolated sandbox. None is valid on a production or personal system.</p>
+    <img class="lab-image" src="images/ad.png" alt="Active Directory">
   </section>
 
   <section class="section">
@@ -102,8 +116,8 @@
       <li>Installed Splunk using the .deb package:
         <pre>sudo dpkg -i splunk-package.deb</pre>
       </li>
-      <li>Started Splunk, enabled it to launch on boot, and verified GUI access at <a href="http://192.168.64.10:8000">http://192.168.64.10:8000</a>.</li>
-      <li>Port 9997 was ready to receive forwarded logs; no additional firewall or network configuration was required.</li>
+      <li>Started Splunk, enabled it to launch on boot, enabled Splunk Web SSL, and verified GUI access at <a href="https://192.168.64.10:8000">https://192.168.64.10:8000</a>.</li>
+      <li>Restricted inbound port 9997 to the authorized forwarder addresses and enabled TLS certificate validation between the forwarders and Splunk indexer.</li>
     </ol>
     <p>References:</p>
     <ul>
@@ -111,7 +125,7 @@
       <li><a href="https://ubuntu.com/server/docs">Ubuntu Server Docs</a></li>
     </ul>
 
-    <img src="images/ubuntu.png" alt="Ubuntu Server" style="width:100%; border-radius:12px; margin-top:1rem;">
+    <img class="lab-image" src="images/ubuntu.png" alt="Ubuntu Server">
   </section>
 
   <section class="section">
@@ -146,7 +160,7 @@
       <li>Verified successful log ingestion in Splunk and confirmed event correlation with Active Directory events.</li>
     </ol>
 
-    <img src="images/win10.png" alt="Windows 10 Workstation" style="width:100%; border-radius:12px; margin-top:1rem;">
+    <img class="lab-image" src="images/win10.png" alt="Windows 10 Workstation">
   </section>
 
   <section class="section">
@@ -162,7 +176,7 @@
       <li>Verified log forwarding to Splunk, enabling correlation with domain controller and endpoint activity.</li>
     </ol>
 
-    <img src="images/splunkcito.png" alt="Splunk Screenshots" style="width:100%; border-radius:12px; margin-top:1rem;">
+    <img class="lab-image" src="images/splunkcito.png" alt="Splunk Screenshots">
   </section>
 
   <section class="section">
@@ -185,7 +199,7 @@
       <li><a href="https://www.offensive-security.com/kali-linux-nethunter-tools/">Kali Linux Offensive Tools</a></li>
     </ul>
 
-    <img src="images/kali.png" alt="Kali Linux Attacker" style="width:100%; border-radius:12px; margin-top:1rem;">
+    <img class="lab-image" src="images/kali.png" alt="Kali Linux Attacker">
   </section>
 
   <section class="section">
@@ -203,11 +217,11 @@
       <li><a href="https://docs.splunk.com/Documentation/Splunk/latest/SearchTutorial/WelcometotheSearchTutorial">Splunk Search Tutorial</a></li>
     </ul>
 
-    <img src="images/splunk.png" alt="Splunk Dashboard Screenshots" style="width:100%; border-radius:12px; margin-top:1rem;">
+    <img class="lab-image" src="images/splunk.png" alt="Splunk Dashboard Screenshots">
   </section>
 
 <section class="section">
-  <h2>Lessons Learned & Insights</h2>
+  <h2>Lessons Learned &amp; Insights</h2>
   <p>Working through this lab was my first real experience with Active Directory, and honestly, it was both exciting and a little intimidating. Setting up Windows Server, promoting it to a domain controller, and creating users and organizational units made me truly appreciate the complexity behind enterprise environments. Applying Group Policies, configuring password rules, login restrictions, and auditing for the first time gave me a hands-on understanding of how administrators enforce security in a real network. At first, installing Sysmon and forwarding logs to Splunk felt overwhelming, but seeing the detailed telemetry and event correlations made me realize how important this data is for detecting suspicious activity like lateral movement or process injection. Simulating attacks with Hydra on Kali Linux was nerve-wracking yet enlightening, showing me how attackers exploit weak credentials and how defenders can spot these behaviors in real time. Centralizing all logs in Splunk helped me understand the value of dashboards, searches, and alerts in monitoring a network effectively. There were frustrating moments when things didn’t work, but troubleshooting, documenting commands, and referencing official guides taught me patience and problem-solving. By the end, I felt I could see the environment from both the attacker’s and defender’s perspectives, giving me a much deeper understanding of cybersecurity operations and the confidence to tackle more complex setups in the future.</p>
   <ul>
     <li>Hands-on experience with Active Directory made me understand authentication flows and policy enforcement for the first time.</li>
@@ -218,7 +232,7 @@
 </section>
 
   <footer>
-    <p>© 2025 Del Risco Technologies</p>
+    <p>© 2026 Del Risco Technologies</p>
   </footer>
 </body>
 </html>
