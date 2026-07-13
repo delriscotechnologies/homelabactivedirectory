@@ -73,7 +73,7 @@
       <li>Simulated attacks using Hydra to evaluate detection capabilities.</li>
     </ul>
 
-    <p>Choosing Active Directory and Windows Server was deliberate. These systems dominate enterprise environments, yet I had never configured them personally. Setting up domain controllers, organizational units, user accounts, and group policies was both challenging and highly educational. It forced me to confront real-world scenarios, such as DNS resolution, authentication flows, and policy enforcement. For consistency, all machines used <strong>DNS 8.8.8.8</strong>, simplifying connectivity and ensuring reliable name resolution.</p>
+    <p>Choosing Active Directory and Windows Server was deliberate. These systems dominate enterprise environments, yet I had never configured them personally. Setting up domain controllers, organizational units, user accounts, and group policies was both challenging and highly educational. It forced me to confront real-world scenarios, such as DNS resolution, authentication flows, and policy enforcement. Domain-joined systems used the domain controller's internal DNS service so they could resolve Active Directory records reliably. The domain controller forwarded external lookups to a public upstream resolver.</p>
 
     <p>Overall, this lab was a hands-on exploration of both red team and blue team concepts. It provided a safe environment to witness, in real time, how user actions, system events, and attacker attempts generate meaningful signals. By the end, I could not only observe these signals but also understand their context and implications—a critical step toward mastering detection engineering and cybersecurity operations.</p>
 
@@ -118,7 +118,7 @@
     <h2>Active Directory Domain Controller Configuration</h2>
     <p>Setting up the Windows Server as a domain controller involved:</p>
     <ol>
-      <li>Assigned static IP <strong>192.168.64.7</strong> and configured DNS to 8.8.8.8.</li>
+      <li>Assigned static IP <strong>192.168.64.7</strong>, configured the server to use its own Active Directory-integrated DNS service, and used a public resolver only as a DNS forwarder for external lookups.</li>
       <li>Installed Active Directory Domain Services (AD DS) and promoted the server to host the forest <strong>delriscotechnologies.local</strong>.</li>
       <li>Created test user accounts for realistic simulations:
         <ul>
@@ -140,7 +140,7 @@
     <h2>Windows 10 Workstation Configuration</h2>
     <p>The workstation was configured to simulate a standard endpoint within the enterprise:</p>
     <ol>
-      <li>Assigned static IP <strong>192.168.64.100</strong> and DNS 8.8.8.8 for consistent connectivity.</li>
+      <li>Assigned static IP <strong>192.168.64.100</strong> and set DNS to the domain controller at <strong>192.168.64.7</strong> so the workstation could locate and join the domain.</li>
       <li>Installed <strong>Splunk Universal Forwarder</strong> to ship Windows Event Logs to the Splunk server.</li>
       <li>Installed Sysmon to enrich telemetry, capturing process creation, network connections, and authentication events.</li>
       <li>Verified successful log ingestion in Splunk and confirmed event correlation with Active Directory events.</li>
