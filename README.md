@@ -5,11 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="#quick-start">Quick Start</a> ·
-  <a href="#lab-architecture">Architecture</a> ·
-  <a href="#what-you-detect">Detection</a> ·
-  <a href="#scope-and-safeguards">Scope</a> ·
-  <a href="SECURITY.md">Security</a>
+  <a href="https://delriscotechnologies.github.io/homelabsoc/"><strong>Full Write-Up</strong></a>
 </p>
 
 ---
@@ -17,7 +13,5 @@
 This repository documents an isolated Active Directory environment built to make authentication, endpoint activity, attack simulation, and defensive analysis visible in one place.
 
 The lab connects a Windows Server domain controller, a domain-joined Windows 10 endpoint, an Ubuntu Splunk server, and a Kali Linux attacker VM. Windows Event Logs and Sysmon telemetry flow into Splunk, where controlled activity can be searched and correlated without touching a production network.
-
-[Read the complete illustrated walkthrough](index.html).
 
 > Use this lab only on systems and networks you own or have explicit permission to test. Every address, account, hostname, and credential shown here belongs to an isolated training sandbox.
