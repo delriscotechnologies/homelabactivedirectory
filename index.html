@@ -111,7 +111,7 @@
 
     <p>Overall, this lab was a hands-on exploration of both red team and blue team concepts. It provided a safe environment to witness, in real time, how user actions, system events, and attacker attempts generate meaningful signals. By the end, I could not only observe these signals but also understand their context and implications—a critical step toward mastering detection engineering and cybersecurity operations.</p>
 
-    <p class="security-note"><strong>Lab safety:</strong> every hostname, account, address, identifier, and credential shown in this project belongs only to an isolated sandbox. None is valid on a production or personal system.</p>
+    <p class="security-note"><strong>Lab-only credentials and evidence:</strong> every hostname, account, address, identifier, and credential shown in this project was intentionally created for and used only inside this isolated sandbox. None was ever used or reused on a personal, production, or external system. The screenshots are retained as historical evidence of the controlled exercise.</p>
     <img class="lab-image" src="images/ad.png" alt="Active Directory">
   </section>
 
@@ -119,11 +119,12 @@
     <h2>Lab Architecture Overview</h2>
     <p>This lab simulates a small enterprise environment, designed for both operational and educational purposes. The network architecture includes:</p>
     <ul>
-      <li><strong>Splunk Server (Ubuntu 22.04, 192.168.64.10)</strong>: Central hub for log collection, analysis, and visualization. Chosen for robust Linux support and easy VM deployment. The server receives telemetry from endpoints and provides dashboards for real-time monitoring (<a href="https://docs.splunk.com">Splunk Docs</a>).</li>
+      <li><strong>Splunk Server (Ubuntu 24.04.3 LTS, 192.168.64.10)</strong>: Central hub for log collection, analysis, and visualization. Chosen for robust Linux support and easy VM deployment. The server receives telemetry from endpoints and provides dashboards for real-time monitoring (<a href="https://docs.splunk.com">Splunk Docs</a>).</li>
       <li><strong>Active Directory Domain Controller (Windows Server, 192.168.64.7)</strong>: Manages users, groups, organizational units, and policies. Provides enterprise-like authentication, authorization, and auditing capabilities (<a href="https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft AD Docs</a>).</li>
-      <li><strong>Windows 10 Workstation (192.168.64.100)</strong>: Simulates a standard user endpoint. Runs Splunk Universal Forwarder and Sysmon to forward detailed event data to Splunk.</li>
+      <li><strong>Windows 10 Workstation (192.168.64.100)</strong>: Historical, isolated lab endpoint running Windows 10 Pro 22H2. It runs Splunk Universal Forwarder and Sysmon to forward detailed event data to Splunk.</li>
       <li><strong>Kali Linux Attacker (192.168.64.250)</strong>: Dedicated offensive machine. Executes controlled brute-force attacks using Hydra to generate realistic adversary activity, helping to test detection rules and monitoring efficacy.</li>
     </ul>
+    <p class="security-note"><strong>Lifecycle note:</strong> Windows 10 Pro 22H2 was used only for this isolated exercise. Standard support ended on October 14, 2025, so this image should not be used for a connected or production deployment without Extended Security Updates; a currently supported Windows version is preferred. See the <a href="https://learn.microsoft.com/en-us/lifecycle/announcements/windows-10-22h2-end-of-support-update">Microsoft lifecycle notice</a>.</p>
     <p>This design allows testing the full lifecycle of network events, from normal operations to malicious activity, and provides a framework for observing attacker behavior in a controlled environment.</p>
   </section>
 
@@ -131,7 +132,7 @@
     <h2>Setting Up the Ubuntu/Splunk Server</h2>
     <p>Steps taken to set up the Splunk server included:</p>
     <ol>
-      <li>Installed <strong>Ubuntu Server 22.04</strong> in a VM with sufficient CPU, memory, and disk to handle log ingestion and analysis.</li>
+      <li>Installed <strong>Ubuntu Server 24.04.3 LTS</strong> in a VM with sufficient CPU, memory, and disk to handle log ingestion and analysis.</li>
       <li>Configured a static IP <strong>192.168.64.10</strong> to ensure reliable connectivity with all forwarders.</li>
       <li>Enabled shared folders for transferring the Splunk installation package from the host system.</li>
       <li>Installed Splunk using the .deb package:
@@ -205,7 +206,7 @@
     <p>Controlled simulations of attacks provide insight into attacker behavior:</p>
     <ol>
       <li>Configured Kali Linux (192.168.64.250) as the attack machine.</li>
-      <li>Built a custom password list using entries from <code>rockyou.txt</code> and the actual CFDR password:
+      <li>Built a custom password list using entries from <code>rockyou.txt</code> and the disposable CFDR password created only for this lab:
         <pre>cat rockyou.txt | grep -i "cfdr" > passwords.txt</pre>
       </li>
       <li>Executed Hydra against RDP on the Windows 10 workstation:
@@ -230,8 +231,8 @@
     <pre>index=wineventlog EventCode=4625 | stats count by Account_Name, src_ip</pre>
     <p>2. Visualize process creation, authentication events, and network connections:</p>
     <pre>index=sysmon EventCode=1 | stats count by Image, User, Computer</pre>
-    <p>3. Separate logs into indexes for endpoints, servers, and attack telemetry for clarity:</p>
-    <pre>index=endpoints, index=servers, index=attacks</pre>
+    <p>3. Search across the lab indexes for endpoint, server, and attack telemetry:</p>
+    <pre>index IN (endpoint, servers, attacks)</pre>
     <p>4. Build dashboards and alerts for abnormal behavior, including repeated failed logins, lateral movement, and suspicious process execution.</p>
     <p>References:</p>
     <ul>
