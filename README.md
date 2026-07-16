@@ -10,11 +10,11 @@
 
 ---
 
-Active Directory Home Lab documents an isolated four-machine detection environment. Windows Server provides Active Directory Domain Services and DNS, a domain-joined Windows 10 endpoint generates security telemetry, Ubuntu hosts Splunk, and Kali Linux produces controlled authentication activity for analysis.
+Active Directory Home Lab documents an isolated four-machine detection environment. Windows Server provides Active Directory Domain Services and DNS, a domain-joined Windows 10 endpoint generates security telemetry, Ubuntu hosts Splunk, and Kali Linux produces controlled authentication activity for analysis. Windows 10 Pro 22H2 appears here only as a historical, isolated training endpoint; its standard support ended on October 14, 2025, so it should not be used for a connected or production deployment without Extended Security Updates.
 
-The lab combines Active Directory auditing, Sysmon endpoint telemetry, Splunk Universal Forwarder, Splunk search and correlation, and authorized Hydra simulations. This repository contains the project write-up and security guidance; it does not contain VM provisioning automation, credentials, certificates, captured evidence, or production-ready infrastructure.
+The lab combines Active Directory auditing, Sysmon endpoint telemetry, Splunk Universal Forwarder, Splunk search and correlation, and authorized Hydra simulations. This repository contains the project write-up, security guidance, and selected screenshots captured inside the isolated lab. Those screenshots may show lab-only hostnames, private addresses, user names, identifiers, and disposable credentials created specifically for the exercise. They were used only in this sandbox and were never used or reused on personal, production, or external systems. The repository does not contain VM provisioning automation, certificates, production credentials, or production-ready infrastructure.
 
-> Build and operate this lab only on systems and networks you own or are explicitly authorized to test. Windows and Splunk telemetry can contain credentials, private addresses, host details, user names, alerts, and other sensitive evidence; never commit real lab data to a public repository.
+> Build and operate this lab only on systems and networks you own or are explicitly authorized to test. Treat every visible account and password as historical lab evidence, never reuse lab credentials elsewhere, and never publish personal or production secrets.
 
 ## References
 
@@ -24,3 +24,4 @@ The lab combines Active Directory auditing, Sysmon endpoint telemetry, Splunk Un
 - [Sysmon Modular repository](https://github.com/olafhartong/sysmon-modular)
 - [Kali Linux Hydra documentation](https://www.kali.org/tools/hydra/)
 - [Ubuntu Server documentation](https://ubuntu.com/server/docs)
+- [Windows 10 lifecycle notice](https://learn.microsoft.com/en-us/lifecycle/announcements/windows-10-22h2-end-of-support-update)
