@@ -120,7 +120,7 @@
     <p>This lab simulates a small enterprise environment, designed for both operational and educational purposes. The network architecture includes:</p>
     <ul>
       <li><strong>Splunk Server (Ubuntu 24.04.3 LTS, 192.168.64.10)</strong>: Central hub for log collection, analysis, and visualization. Chosen for robust Linux support and easy VM deployment. The server receives telemetry from endpoints and provides dashboards for real-time monitoring (<a href="https://docs.splunk.com">Splunk Docs</a>).</li>
-      <li><strong>Active Directory Domain Controller (Windows Server, 192.168.64.7)</strong>: Manages users, groups, organizational units, and policies. Provides enterprise-like authentication, authorization, and auditing capabilities (<a href="https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft AD Docs</a>).</li>
+      <li><strong>Active Directory Domain Controller (Windows Server, 192.168.64.7)</strong>: Manages users, groups, organizational units, and policies. Provides enterprise-like authentication, authorization, and auditing capabilities (<a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft AD Docs</a>).</li>
       <li><strong>Windows 10 Workstation (192.168.64.100)</strong>: Historical, isolated lab endpoint running Windows 10 Pro 22H2. It runs Splunk Universal Forwarder and Sysmon to forward detailed event data to Splunk.</li>
       <li><strong>Kali Linux Attacker (192.168.64.250)</strong>: Dedicated offensive machine. Executes controlled brute-force attacks using Hydra to generate realistic adversary activity, helping to test detection rules and monitoring efficacy.</li>
     </ul>
@@ -189,12 +189,12 @@
     <h2>Sysmon Installation and Modular Configuration</h2>
     <p>Sysmon enhances Windows Event Logs by providing detailed, structured, and actionable telemetry:</p>
     <ol>
-      <li>Downloaded Sysmon from Microsoft Sysinternals (<a href="https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon">Sysmon Docs</a>).</li>
+      <li>Downloaded Sysmon from Microsoft Sysinternals (<a href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon">Sysmon Docs</a>).</li>
       <li>Obtained Olaf Hartong’s Modular Sysmon configuration for filtered and meaningful events (<a href="https://github.com/olafhartong/sysmon-modular">Sysmon Modular</a>).</li>
       <li>Installed Sysmon using:
         <pre>.\sysmon64.exe -i ..\sysmonconfig.xml</pre>
       </li>
-      <li>Ensured Sysmon ran under the user context to capture detailed per-user activity.</li>
+      <li>Verified that the Sysmon service and driver were running and writing events to the Windows event log. Sysmon records user context in relevant events but does not run as the investigated user.</li>
       <li>Verified log forwarding to Splunk, enabling correlation with domain controller and endpoint activity.</li>
     </ol>
 
