@@ -178,7 +178,7 @@
     <ol>
       <li>Assigned static IP <strong>192.168.64.100</strong> and set DNS to the domain controller at <strong>192.168.64.7</strong> so the workstation could locate and join the domain.</li>
       <li>Installed <strong>Splunk Universal Forwarder</strong> to ship Windows Event Logs to the Splunk server.</li>
-      <li>Installed Sysmon to enrich telemetry, capturing process creation, network connections, and authentication events.</li>
+      <li>Installed Sysmon to enrich endpoint telemetry, including process creation and network connections. Windows Security logs provided authentication events.</li>
       <li>Verified successful log ingestion in Splunk and confirmed event correlation with Active Directory events.</li>
     </ol>
 
@@ -206,13 +206,11 @@
     <p>Controlled simulations of attacks provide insight into attacker behavior:</p>
     <ol>
       <li>Configured Kali Linux (192.168.64.250) as the attack machine.</li>
-      <li>Built a custom password list using entries from <code>rockyou.txt</code> and the disposable CFDR password created only for this lab:
-        <pre>cat rockyou.txt | grep -i "cfdr" > passwords.txt</pre>
-      </li>
+      <li>Prepared a small lab-only password list containing decoy entries and the disposable CFDR test credential. The actual test credential is intentionally omitted from this public write-up.</li>
       <li>Executed Hydra against RDP on the Windows 10 workstation:
         <pre>hydra -t 1 -V -f -l CFDR -P passwords.txt rdp://192.168.64.100</pre>
       </li>
-      <li>Monitored all authentication attempts, process creation, and network activity via Sysmon and Splunk.</li>
+      <li>Monitored authentication attempts from Windows Security logs and process and network activity from Sysmon, then analyzed both data sources in Splunk.</li>
       <li>Analyzed patterns of attacks and timing to understand how brute-force techniques operate in real environments.</li>
     </ol>
     <p>References:</p>
@@ -229,11 +227,13 @@
     <p>With all telemetry centralized in Splunk, analysis became the core activity:</p>
     <p>1. Search and correlate Windows Event Logs from AD and the workstation to identify anomalous login attempts:</p>
     <pre>index=wineventlog EventCode=4625 | stats count by Account_Name, src_ip</pre>
-    <p>2. Visualize process creation, authentication events, and network connections:</p>
+    <p>2. Visualize Sysmon process creation:</p>
     <pre>index=sysmon EventCode=1 | stats count by Image, User, Computer</pre>
-    <p>3. Search across the lab indexes for endpoint, server, and attack telemetry:</p>
+    <p>3. Review Sysmon network connections when Event ID 3 is enabled in the Sysmon configuration:</p>
+    <pre>index=sysmon EventCode=3 | stats count by Image, DestinationIp, DestinationPort, Computer</pre>
+    <p>4. Search across the lab indexes for endpoint, server, and attack telemetry:</p>
     <pre>index IN (endpoint, servers, attacks)</pre>
-    <p>4. Build dashboards and alerts for abnormal behavior, including repeated failed logins, lateral movement, and suspicious process execution.</p>
+    <p>5. Build dashboards and alerts for abnormal behavior, including repeated failed logins, lateral movement, and suspicious process execution.</p>
     <p>References:</p>
     <ul>
       <li><a href="https://docs.splunk.com/Documentation/Splunk/latest/SearchTutorial/WelcometotheSearchTutorial">Splunk Search Tutorial</a></li>
