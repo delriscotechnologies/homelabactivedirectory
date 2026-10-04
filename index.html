@@ -225,7 +225,7 @@
   <section class="section">
     <h2>Analyzing Data in Splunk</h2>
     <p>The example searches below assume <code>wineventlog</code> and <code>sysmon</code> indexes. Adapt index names and extracted fields to your forwarding configuration and Splunk add-ons.</p>
-    <p>1. Search and correlate Windows Event Logs from AD and the workstation to identify anomalous login attempts:</p>
+    <p>1. Count failed logons by account and source IP:</p>
     <pre>index=wineventlog EventCode=4625 | stats count by Account_Name, src_ip</pre>
     <p>2. Visualize Sysmon process creation:</p>
     <pre>index=sysmon EventCode=1 | stats count by Image, User, Computer</pre>
