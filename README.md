@@ -23,3 +23,7 @@ The lab focuses on collecting Windows and Active Directory telemetry and using i
 - [Splunk documentation](https://docs.splunk.com/)
 - [Sysmon Modular](https://github.com/olafhartong/sysmon-modular)
 - [Kali Linux Hydra documentation](https://www.kali.org/tools/hydra/)
+
+## Additional Write-Up
+
+- [AI SOC Homelab](aisochomelab/README.md)
